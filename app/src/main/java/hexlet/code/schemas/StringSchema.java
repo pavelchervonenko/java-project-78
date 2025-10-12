@@ -3,42 +3,35 @@ package hexlet.code.schemas;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringSchema {
+public class StringSchema implements BaseSchema<String> {
     private boolean required = false;
     private Integer minLength = null;
     private final List<String> textContains = new ArrayList<>();
 
+    @Override
     public StringSchema required() {
         this.required = true;
         return this;
     }
 
-    public StringSchema minLength(int lenght) {
-        this.minLength = lenght;
-        return this;
+    @Override
+    public boolean isNullAllowed() {
+        return !required;
     }
 
-    public StringSchema contains(String text) {
-        if (text != null) {
-            this.textContains.add(text);
-        }
-        return this;
-    }
-
-    public boolean isValid(Object value) {
-        if (value == null) {
-            return !required;
-        }
-
-        String s;
-        if (value instanceof String) {
-            s = (String) value;
+    @Override
+    public String cast(Object value) {
+        if (value instanceof String s) {
+            return s;
         } else {
-            return false;
+            return null;
         }
+    }
 
+    @Override
+    public boolean test(String s) {
         if (s.isEmpty()) {
-            return !required;
+            return isNullAllowed();
         }
 
         if (minLength != null && s.length() < minLength) {
@@ -52,5 +45,17 @@ public class StringSchema {
         }
 
         return true;
+    }
+
+    public StringSchema minLength(int lenght) {
+        this.minLength = lenght;
+        return this;
+    }
+
+    public StringSchema contains(String text) {
+        if (text != null) {
+            this.textContains.add(text);
+        }
+        return this;
     }
 }
