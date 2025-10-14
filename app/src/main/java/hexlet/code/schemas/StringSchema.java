@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StringSchema implements BaseSchema<String> {
+
     private boolean required = false;
     private Integer minLength = null;
     private final List<String> textContains = new ArrayList<>();

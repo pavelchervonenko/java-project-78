@@ -67,7 +67,7 @@ public class StringSchemaTest {
     }
 
     @Test
-    void notStringType() {
+    void wrongType() {
         StringSchema schema = new StringSchema();
 
         assertFalse(schema.isValid(123));

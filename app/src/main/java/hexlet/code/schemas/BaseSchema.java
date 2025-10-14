@@ -1,6 +1,7 @@
 package hexlet.code.schemas;
 
 public interface BaseSchema<T> {
+
     BaseSchema<T> required();
 
     boolean isNullAllowed();
