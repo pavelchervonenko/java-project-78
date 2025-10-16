@@ -1,5 +1,6 @@
 package hexlet.code.schemas;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MapSchema implements BaseSchema<Map<?, ?>> {
@@ -34,7 +35,7 @@ public class MapSchema implements BaseSchema<Map<?, ?>> {
             return false;
         }
 
-        if (shapes != null) {
+        if (shapes != null && !shapes.isEmpty()) {
             for (var entry : shapes.entrySet()) {
                 var key = entry.getKey();
                 var schema = entry.getValue();
@@ -53,8 +54,14 @@ public class MapSchema implements BaseSchema<Map<?, ?>> {
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema<?>> data) {
-        this.shapes = data;
+    public MapSchema shape(Map<String, ? extends BaseSchema<?>> data) {
+        var copy = new HashMap<String, BaseSchema<?>>(data.size());
+
+        for (var e : data.entrySet()) {
+            copy.put(e.getKey(), e.getValue());
+        }
+
+        this.shapes = copy;
         return this;
     }
 
