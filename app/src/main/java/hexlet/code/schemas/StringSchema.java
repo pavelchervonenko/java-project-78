@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringSchema implements BaseSchema<String> {
+public final class StringSchema implements BaseSchema<String> {
 
     private boolean required = false;
     private Integer minLength = null;
