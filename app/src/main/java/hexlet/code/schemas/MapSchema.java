@@ -6,6 +6,7 @@ public class MapSchema implements BaseSchema<Map<?, ?>> {
 
     private boolean required = false;
     private Integer size = null;
+    private Map<String, BaseSchema<?>> shapes = null;
 
     @Override
     public MapSchema required() {
@@ -32,6 +33,18 @@ public class MapSchema implements BaseSchema<Map<?, ?>> {
         if (size != null && map.size() != size) {
             return false;
         }
+
+        if (shapes != null) {
+            for (var entry : shapes.entrySet()) {
+                var key = entry.getKey();
+                var schema = entry.getValue();
+                var value = map.get(key);
+
+                if (!schema.isValid(value)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -39,4 +52,10 @@ public class MapSchema implements BaseSchema<Map<?, ?>> {
         this.size = n;
         return this;
     }
+
+    public MapSchema shape(Map<String, BaseSchema<?>> data) {
+        this.shapes = data;
+        return this;
+    }
+
 }
