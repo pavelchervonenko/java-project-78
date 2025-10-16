@@ -3,10 +3,10 @@
 
 ## Описание
 Валидатор данных – библиотека, с помощью которой можно проверять корректность любых данных.
-За основу для проекта взята библиотека [yup.](https://github.com/jquense/yup).
+- За основу для проекта взята библиотека [yup.](https://github.com/jquense/yup).
 
 ## Пример использования
-```
+```Java
 import hexlet.code.Validator;
 import hexlet.code.schemas.StringSchema;
 import hexlet.code.schemas.NumberSchema;
