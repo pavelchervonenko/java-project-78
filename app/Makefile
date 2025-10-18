@@ -18,3 +18,5 @@ checkstyle:
 
 clean:
 	./gradlew clean
+
+.PHONY: build
