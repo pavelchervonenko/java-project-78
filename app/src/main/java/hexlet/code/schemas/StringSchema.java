@@ -1,62 +1,55 @@
 package hexlet.code.schemas;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Predicate;
 
-public final class StringSchema implements BaseSchema<String> {
-
-    private boolean required = false;
-    private Integer minLength = null;
-    private final List<String> textContains = new ArrayList<>();
+public final class StringSchema extends BaseSchema<String> {
 
     @Override
     public StringSchema required() {
-        this.required = true;
+        super.required();
+
+        Predicate<String> check = new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                return s != null && !s.isEmpty();
+            }
+        };
+
+        addCheck("required:notEmpty", check);
         return this;
     }
 
-    @Override
-    public boolean isNullAllowed() {
-        return !required;
-    }
-
-    @Override
-    public String cast(Object value) {
-        if (value instanceof String s) {
-            return s;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public boolean test(String s) {
-        if (s.isEmpty()) {
-            return isNullAllowed();
-        }
-
-        if (minLength != null && s.length() < minLength) {
-            return false;
-        }
-
-        for (String sub : textContains) {
-            if (!s.contains(sub)) {
-                return false;
+    public StringSchema minLength(int n) {
+        Predicate<String> check = new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                if (s == null || s.isEmpty()) {
+                    return !required;
+                }
+                return s.length() >= n;
             }
-        }
+        };
 
-        return true;
-    }
-
-    public StringSchema minLength(int lenght) {
-        this.minLength = lenght;
+        addCheck("minLength", check);
         return this;
     }
 
     public StringSchema contains(String text) {
-        if (text != null) {
-            this.textContains.add(text);
+        if (text == null) {
+            return this;
         }
+
+        Predicate<String> check = new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                if (s == null || s.isEmpty()) {
+                    return !required;
+                }
+                return s.contains(text);
+            }
+        };
+
+        addCheck("contains:" + text, check);
         return this;
     }
 }

@@ -1,26 +1,31 @@
 package hexlet.code.schemas;
 
-public interface BaseSchema<T> {
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Predicate;
 
-    BaseSchema<T> required();
+public abstract class BaseSchema<T> {
+    protected Map<String, Predicate<T>> checks = new LinkedHashMap<>();
+    protected boolean required = false;
 
-    boolean isNullAllowed();
-
-    T cast(Object value);
-
-    boolean test(T value);
-
-    default boolean isValid(Object value) {
-        if (value == null) {
-            return isNullAllowed();
-        }
-
-        T v = cast(value);
-        if (v == null) {
-            return false;
-        }
-
-        return test(v);
+    protected final void addCheck(String name, Predicate<T> validate) {
+        checks.put(name, validate);
     }
 
+    public final boolean isValid(T value) {
+        if (value == null) {
+            return !required;
+        }
+        for (var p: checks.values()) {
+            if (!p.test(value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public BaseSchema<T> required() {
+        this.required = true;
+        return this;
+    }
 }

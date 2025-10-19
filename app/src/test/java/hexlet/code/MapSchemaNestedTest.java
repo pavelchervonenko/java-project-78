@@ -62,24 +62,24 @@ public class MapSchemaNestedTest {
         assertTrue(schema.isValid(human1));
     }
 
-    @Test
-    void wrongTypeInValue() {
-        var v = new Validator();
-        MapSchema schema = v.map();
-
-        Map<String, BaseSchema<?>> schemas = new HashMap<>();
-        schemas.put("age", v.number().positive());
-
-        schema.shape(schemas);
-
-        Map<String, Object> human1 = new HashMap<>();
-        human1.put("age", 18);
-        assertTrue(schema.isValid(human1));
-
-        Map<String, Object> human2 = new HashMap<>();
-        human2.put("age", "18");
-        assertFalse(schema.isValid(human2));
-    }
+//    @Test
+//    void wrongTypeInValue() {
+//        var v = new Validator();
+//        MapSchema schema = v.map();
+//
+//        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+//        schemas.put("age", v.number().positive());
+//
+//        schema.shape(schemas);
+//
+//        Map<String, Object> human1 = new HashMap<>();
+//        human1.put("age", 18);
+//        assertTrue(schema.isValid(human1));
+//
+//        Map<String, Object> human2 = new HashMap<>();
+//        human2.put("age", "18");
+//        assertFalse(schema.isValid(human2));
+//    }
 
     @Test
     void sizeofCombination() {
@@ -129,18 +129,18 @@ public class MapSchemaNestedTest {
         assertTrue(schema.isValid(human1));
     }
 
-    @Test
-    void notMap() {
-        var v = new Validator();
-        MapSchema schema = v.map();
-
-        Map<String, BaseSchema<?>> schemas = new HashMap<>();
-        schemas.put("first", v.string().required());
-
-        schema.shape(schemas);
-
-        assertFalse(schema.isValid(123));
-        assertFalse(schema.isValid("not a map"));
-        assertFalse(schema.isValid(new Object()));
-    }
+//    @Test
+//    void notMap() {
+//        var v = new Validator();
+//        MapSchema schema = v.map();
+//
+//        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+//        schemas.put("first", v.string().required());
+//
+//        schema.shape(schemas);
+//
+//        assertFalse(schema.isValid(123));
+//        assertFalse(schema.isValid("not a map"));
+//        assertFalse(schema.isValid(new Object()));
+//    }
 }

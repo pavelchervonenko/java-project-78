@@ -3,66 +3,61 @@ package hexlet.code.schemas;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MapSchema implements BaseSchema<Map<?, ?>> {
+import java.util.function.Predicate;
 
-    private boolean required = false;
-    private Integer size = null;
+
+public final class MapSchema extends BaseSchema<Map<?, ?>> {
+
     private Map<String, BaseSchema<?>> shapes = null;
 
     @Override
     public MapSchema required() {
-        this.required = true;
+        super.required();
         return this;
     }
 
-    @Override
-    public boolean isNullAllowed() {
-        return !required;
-    }
-
-    @Override
-    public Map<?, ?> cast(Object value) {
-        if (value instanceof Map<?, ?> m) {
-            return m;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public boolean test(Map<?, ?> map) {
-        if (size != null && map.size() != size) {
-            return false;
-        }
-
-        if (shapes != null && !shapes.isEmpty()) {
-            for (var entry : shapes.entrySet()) {
-                var key = entry.getKey();
-                var schema = entry.getValue();
-                var value = map.get(key);
-
-                if (!schema.isValid(value)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public MapSchema sizeof(int n) {
-        this.size = n;
+        Predicate<Map<?, ?>> check = new Predicate<Map<?, ?>>() {
+            @Override
+            public boolean test(Map<?, ?> m) {
+                return m.size() == n;
+            }
+        };
+        addCheck("sizeof", check);
         return this;
     }
 
     public MapSchema shape(Map<String, ? extends BaseSchema<?>> data) {
         var copy = new HashMap<String, BaseSchema<?>>(data.size());
-
         for (var e : data.entrySet()) {
             copy.put(e.getKey(), e.getValue());
         }
-
         this.shapes = copy;
+
+        Predicate<Map<?, ?>> check = new Predicate<Map<?, ?>>() {
+            @Override
+            public boolean test(Map<?, ?> m) {
+                if (shapes == null || shapes.isEmpty()) {
+                    return true;
+                }
+                for (var e : shapes.entrySet()) {
+                    var key = e.getKey();
+                    var schema = e.getValue();
+                    var value = m.get(key);
+                    if (!validateBy(schema, value)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        addCheck("shape", check);
         return this;
     }
 
+    private static <T> boolean validateBy(BaseSchema<T> schema, Object value) {
+        T v = (T) value;
+        return schema.isValid(v);
+    }
 }
