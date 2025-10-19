@@ -24,6 +24,19 @@ public abstract class BaseSchema<T> {
         return true;
     }
 
+    /**
+     * Marks this schema as required.
+     * After calling this method, {@code null} is considered invalid.
+     *
+     * <p><b>Extension contract:</b></p>
+     * <ul>
+     *   <li>Subclasses may override this method to add type-specific constraints.</li>
+     *   <li>Subclasses must call {@code super.required()} at the beginning of the method.</li>
+     *   <li>The method must be idempotent: repeated calls must not change behavior beyond the first call.</li>
+     * </ul>
+     *
+     * @return this schema instance for fluent API chaining
+     */
     public BaseSchema<T> required() {
         this.required = true;
         return this;
