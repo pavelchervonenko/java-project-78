@@ -4,9 +4,8 @@ import java.util.function.Predicate;
 
 public final class StringSchema extends BaseSchema<String> {
 
-    @Override
     public StringSchema required() {
-        super.required();
+        this.required = true;
 
         Predicate<String> check = new Predicate<String>() {
             @Override

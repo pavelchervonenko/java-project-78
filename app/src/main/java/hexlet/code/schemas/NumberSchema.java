@@ -4,9 +4,8 @@ import java.util.function.Predicate;
 
 public final class NumberSchema extends BaseSchema<Number> {
 
-    @Override
     public NumberSchema required() {
-        super.required();
+        this.required = true;
         return this;
     }
 

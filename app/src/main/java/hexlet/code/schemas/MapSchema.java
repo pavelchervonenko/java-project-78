@@ -1,6 +1,5 @@
 package hexlet.code.schemas;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import java.util.function.Predicate;
@@ -10,9 +9,8 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
 
     private Map<String, BaseSchema<?>> shapes = null;
 
-    @Override
     public MapSchema required() {
-        super.required();
+        this.required = true;
         return this;
     }
 
@@ -28,19 +26,13 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
     }
 
     public MapSchema shape(Map<String, ? extends BaseSchema<?>> data) {
-        var copy = new HashMap<String, BaseSchema<?>>(data.size());
-        for (var e : data.entrySet()) {
-            copy.put(e.getKey(), e.getValue());
-        }
-        this.shapes = copy;
-
         Predicate<Map<?, ?>> check = new Predicate<Map<?, ?>>() {
             @Override
             public boolean test(Map<?, ?> m) {
-                if (shapes == null || shapes.isEmpty()) {
+                if (data == null || data.isEmpty()) {
                     return true;
                 }
-                for (var e : shapes.entrySet()) {
+                for (var e : data.entrySet()) {
                     var key = e.getKey();
                     var schema = e.getValue();
                     var value = m.get(key);
