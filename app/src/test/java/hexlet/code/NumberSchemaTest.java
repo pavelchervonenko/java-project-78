@@ -59,15 +59,6 @@ public class NumberSchemaTest {
         assertFalse(schema.isValid(11));
     }
 
-//    @Test
-//    void wrongType() {
-//        NumberSchema schema = new NumberSchema();
-//
-//        assertFalse(schema.isValid("5"));
-//        assertFalse(schema.isValid(true));
-//        assertFalse(schema.isValid(new Object()));
-//    }
-
     @Test
     void rangeOverride() {
         NumberSchema schema = new NumberSchema();
@@ -90,7 +81,6 @@ public class NumberSchemaTest {
         schema.range(5, 10);
 
         assertFalse(schema.isValid(null));
-        //assertFalse(schema.isValid(""));
         assertFalse(schema.isValid(0));
         assertFalse(schema.isValid(-3));
         assertFalse(schema.isValid(-7));

@@ -28,19 +28,6 @@ public class MapSchemaTest {
         assertTrue(schema.isValid(new HashMap<>()));
     }
 
-//    @Test
-//    void wrongType() {
-//        MapSchema schema = new MapSchema();
-//
-//        assertFalse(schema.isValid(123));
-//        assertFalse(schema.isValid("priv"));
-//        assertFalse(schema.isValid(new Object()));
-//
-//        schema.required();
-//
-//        assertFalse(schema.isValid(123));
-//    }
-
     @Test
     void size() {
         MapSchema schema = new MapSchema();

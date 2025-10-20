@@ -66,15 +66,6 @@ public class StringSchemaTest {
         assertTrue(schema.isValid(""));
     }
 
-//    @Test
-//    void wrongType() {
-//        StringSchema schema = new StringSchema();
-//
-//        assertFalse(schema.isValid(123));
-//        assertFalse(schema.isValid(true));
-//        assertFalse(schema.isValid(new Object()));
-//    }
-
     @Test
     void mixed() {
         StringSchema schema = new StringSchema();
